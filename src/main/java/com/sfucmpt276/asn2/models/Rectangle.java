@@ -22,7 +22,7 @@ public class Rectangle {
     private String name;
 
     @NotEmpty(message="Color is required!")
-    @Size(min=6, max=7, message="Color must be a valid hex code")
+    @Size(min=6, max=6, message="Color must be a valid hex code")
     private String color;
 
     @NotNull(message="Height is required!")

@@ -2,7 +2,6 @@ package com.sfucmpt276.asn2.controllers;
 
 import java.util.List;
 
-import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,69 +25,56 @@ public class RectangleController {
     private RectangleService rectangleService;
 
     @GetMapping("")
-    public String index(Model model, HttpSession session) {
-        if (session.getAttribute("id") == null) {
-            return "redirect:/";
-        }
+    public String index(Model model) {
         List<Rectangle> rectangles = rectangleService.findAll();
-        System.out.println("Retrieved Rectangles: " + rectangles);
+        System.out.println("Retrieved Rectangles: " + rectangles); // Debug statement
         model.addAttribute("rectangles", rectangles);
         model.addAttribute("newRectangle", new Rectangle());
-        return "index.jsp";
+        return "index";
     }
 
     @PostMapping("/create")
     public String createRectangle(@Valid @ModelAttribute("newRectangle") Rectangle newRectangle, 
-            BindingResult result, Model model, HttpSession session) {
+            BindingResult result, Model model) {
         
         System.out.println("Creating Rectangle: " + newRectangle);
         
         if (result.hasErrors()) {
             List<Rectangle> rectangles = rectangleService.findAll();
             model.addAttribute("rectangles", rectangles);
-            return "index.jsp";
+            return "index";
         }
 
         rectangleService.create(newRectangle, result);
         return "redirect:/rectangles";
     }
 
-    @GetMapping("/edit/{id}")
-    public String editRectangle(@PathVariable Long id, Model model, HttpSession session) {
-        if (session.getAttribute("id") == null) {
-            return "redirect:/";
-        }
+    @GetMapping("/{id}")
+    public String viewRectangle(@PathVariable Long id, Model model) {
         Rectangle rectangle = rectangleService.findById(id);
         if (rectangle == null) {
             return "redirect:/rectangles";
         }
         model.addAttribute("rectangle", rectangle);
-        return "edit.jsp";
+        return "rectangle";
     }
 
     @PostMapping("/update/{id}")
     public String updateRectangle(@PathVariable Long id, @Valid @ModelAttribute("rectangle") Rectangle updatedRectangle, 
-            BindingResult result, Model model, HttpSession session) {
-        
-        if (session.getAttribute("id") == null) {
-            return "redirect:/";
-        }
-
-        Rectangle rectangle = rectangleService.update(id, updatedRectangle, result);
+            BindingResult result, Model model) {
         
         if(result.hasErrors()) {
-            return "edit.jsp";
+            model.addAttribute("rectangle", rectangleService.findById(id));
+            return "rectangle";
         }
-        
-        return "redirect:/rectangles";
-    }
 
+        rectangleService.update(id, updatedRectangle, result);
+        return "rectangle";
+    }
     @GetMapping("/delete/{id}")
-    public String deleteRectangle(@PathVariable Long id, HttpSession session) {
-        if (session.getAttribute("id") == null) {
-            return "redirect:/";
-        }
+    public String deleteRectangle(@PathVariable Long id) {
         rectangleService.delete(id);
         return "redirect:/rectangles";
     }
+
 }

@@ -6,6 +6,8 @@ import org.springframework.stereotype.Service;
 import com.sfucmpt276.asn2.models.Rectangle;
 import com.sfucmpt276.asn2.repositories.RectangleRepository;
 import org.springframework.validation.BindingResult;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 @Service
 public class RectangleService {
@@ -14,7 +16,8 @@ public class RectangleService {
     private RectangleRepository rectangleRepository;
 
     public List<Rectangle> findAll() {
-        return rectangleRepository.findAll();
+        return StreamSupport.stream(rectangleRepository.findAll().spliterator(), false)
+                            .collect(Collectors.toList());
     }
 
     public Rectangle create(Rectangle newRectangle, BindingResult result) {

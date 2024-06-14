@@ -9,7 +9,7 @@
     <form action="/rectangles/create" method="post">
         <label for="name">Name:</label>
         <input type="text" id="name" name="name" value="${newRectangle.name}"/>
-        <label for="color">Color:</label>
+        <label for="color">Color: #</label>
         <input type="text" id="color" name="color" value="${newRectangle.color}"/>
         <label for="height">Height:</label>
         <input type="text" id="height" name="height" value="${newRectangle.height}"/>
@@ -19,8 +19,8 @@
     </form>
     <ul>
         <c:forEach var="rectangle" items="${rectangles}">
-            <li>${rectangle.name} - ${rectangle.color} - ${rectangle.height} - ${rectangle.width} 
-                <a href="/rectangles/edit/${rectangle.id}">Edit</a> 
+            <li>
+                <a href="/rectangles/${rectangle.id}">${rectangle.name}</a> - ${rectangle.color} - ${rectangle.height} - ${rectangle.width} 
                 <a href="/rectangles/delete/${rectangle.id}">Delete</a>
             </li>
         </c:forEach>
