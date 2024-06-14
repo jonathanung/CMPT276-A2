@@ -1,0 +1,27 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:14
+    environment:
+      POSTGRES_DB: asn2_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  app:
+    build: .
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgres://asn2_db_ic45_user:ab1jpsJmYxqaBALthCE1C45eAnCumzzN@dpg-cpmd5cdds78s73ag97h0-a/asn2_db_ic45
+      SPRING_DATASOURCE_USERNAME: asn2_db_ic45_user
+      SPRING_DATASOURCE_PASSWORD: ab1jpsJmYxqaBALthCE1C45eAnCumzzN
+    depends_on:
+      - postgres
+
+volumes:
+  postgres_data:
