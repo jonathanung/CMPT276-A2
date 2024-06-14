@@ -31,27 +31,25 @@ public class RectangleController {
             return "redirect:/";
         }
         List<Rectangle> rectangles = rectangleService.findAll();
+        System.out.println("Retrieved Rectangles: " + rectangles);
         model.addAttribute("rectangles", rectangles);
         model.addAttribute("newRectangle", new Rectangle());
-        return "rectangles/index.jsp";
+        return "index.jsp";
     }
 
     @PostMapping("/create")
     public String createRectangle(@Valid @ModelAttribute("newRectangle") Rectangle newRectangle, 
             BindingResult result, Model model, HttpSession session) {
         
-        if (session.getAttribute("id") == null) {
-            return "redirect:/";
-        }
-
-        Rectangle rectangle = rectangleService.create(newRectangle, result);
+        System.out.println("Creating Rectangle: " + newRectangle);
         
-        if(result.hasErrors()) {
+        if (result.hasErrors()) {
             List<Rectangle> rectangles = rectangleService.findAll();
             model.addAttribute("rectangles", rectangles);
-            return "rectangles/index.jsp";
+            return "index.jsp";
         }
-        
+
+        rectangleService.create(newRectangle, result);
         return "redirect:/rectangles";
     }
 
@@ -65,7 +63,7 @@ public class RectangleController {
             return "redirect:/rectangles";
         }
         model.addAttribute("rectangle", rectangle);
-        return "rectangles/edit.jsp";
+        return "edit.jsp";
     }
 
     @PostMapping("/update/{id}")
@@ -79,7 +77,7 @@ public class RectangleController {
         Rectangle rectangle = rectangleService.update(id, updatedRectangle, result);
         
         if(result.hasErrors()) {
-            return "rectangles/edit.jsp";
+            return "edit.jsp";
         }
         
         return "redirect:/rectangles";
