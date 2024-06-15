@@ -4,9 +4,9 @@ services:
   postgres:
     image: postgres:14
     environment:
-      POSTGRES_DB: asn2_db
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: jdbc:postgresql://dpg-cpmd5cdds78s73ag97h0-a:5432/asn2_db_ic45
+      POSTGRES_USER: asn2_db_ic45_user
+      POSTGRES_PASSWORD: ab1jpsJmYxqaBALthCE1C45eAnCumzzN
     ports:
       - "5432:5432"
     volumes:
@@ -17,9 +17,11 @@ services:
     ports:
       - "8080:8080"
     environment:
-      SPRING_DATASOURCE_URL: jdbc:postgres://asn2_db_ic45_user:ab1jpsJmYxqaBALthCE1C45eAnCumzzN@dpg-cpmd5cdds78s73ag97h0-a/asn2_db_ic45
+      SPRING_DATASOURCE_URL: jdbc:postgres://asn2_db_ic45_user:ab1jpsJmYxqaBALthCE1C45eAnCumzzN@dpg-cpmd5cdds78s73ag97h0-a.oregon-postgres.render.com/asn2_db_ic45
       SPRING_DATASOURCE_USERNAME: asn2_db_ic45_user
       SPRING_DATASOURCE_PASSWORD: ab1jpsJmYxqaBALthCE1C45eAnCumzzN
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+      SRPING_JPA_DATABASE_PLATFORM: org.hibernate.dialect.PostgreSQLDialect
     depends_on:
       - postgres
 

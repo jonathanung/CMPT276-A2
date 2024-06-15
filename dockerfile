@@ -4,8 +4,7 @@ WORKDIR /app
 COPY . .
 RUN mvn clean package -DskipTests
 
-# Use the official OpenJDK image to run the app
-FROM openjdk:17-jdk-slim
-WORKDIR /app
-COPY --from=build /app/target/asn2-0.0.1-SNAPSHOT.jar app.jar
-ENTRYPOINT ["java", "-jar", "app.jar"]
+# Use the official Tomcat image to run the app
+FROM tomcat:9.0-jdk17-openjdk-slim
+WORKDIR /usr/local/tomcat/webapps/
+COPY --from=build /app/target/asn2-0.0.1-SNAPSHOT.war ./ROOT.war
